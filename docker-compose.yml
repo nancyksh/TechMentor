@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: techmentor
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

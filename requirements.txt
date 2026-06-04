@@ -1,0 +1,22 @@
+# Core web framework
+streamlit>=1.36,<2.0
+
+# Agent orchestration
+crewai>=0.86,<1.0
+
+# LLM (Google Gemini)
+google-generativeai>=0.7,<1.0
+
+# NLP / embeddings
+sentence-transformers>=2.7,<4.0
+numpy>=1.26,<2.0
+
+# Config
+python-dotenv>=1.0,<2.0
+
+# Testing
+pytest>=8.0,<9.0
+pytest-cov>=5.0,<6.0
+
+# Lint / format
+ruff>=0.5,<1.0
