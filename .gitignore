@@ -75,3 +75,17 @@ hf_cache/
 # HF Spaces
 *.h5
 *.onnx
+
+# Binary reference / source-of-truth files (keep content as .md instead)
+*.docx
+*.doc
+*.pptx
+*.pdf
+*.xlsx
+
+# Local HF / model caches
+data/hf_cache/
+data/embeddings_cache/
+data/raw/
+models_cache/
+
