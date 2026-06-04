@@ -2,13 +2,13 @@
 
 > **Current phase is highlighted at the top. The table below is updated after every phase exit.**
 
-## 🟢 Current Phase: **0 — Repo & Tooling Bootstrap**
+## ✅ Current Phase: **0 — Repo & Tooling Bootstrap (DONE)** → moving to **1 — Architecture & Documentation + 2 — Data Layer**
 
 | # | Phase | Deliverable | Status | Completed on |
 |---|---|---|---|---|
-| **0** | Repo & Tooling Bootstrap | Git init, push to GitHub, `.gitignore`, `requirements.txt`, README skeleton, Dockerfile skeleton, CI lint | 🟢 In Progress | — |
-| 1 | Architecture & Documentation | `docs/01_architecture.md`, `docs/02_phase_plan.md`, `AGENT.md` v1 | ⬜ Pending | — |
-| 2 | Data Layer | SQLite schema (users, sessions, messages, quiz, interview, roadmap), DAO, seed script | ⬜ Pending | — |
+| **0** | Repo & Tooling Bootstrap | Git init, push to GitHub, `.gitignore`, `requirements.txt`, README skeleton, Dockerfile skeleton, CI lint | ✅ Done | 2026-06-04 |
+| 1 | Architecture & Documentation | `docs/01_architecture.md`, `docs/02_phase_plan.md`, `AGENT.md` v1 | 🟢 In Progress | — |
+| 2 | Data Layer | SQLite schema (users, sessions, messages, quiz, interview, roadmap), DAO, seed script | 🟢 In Progress | — |
 | 3 | NLP Foundation | Sentence-BERT loader, embedding store, retrieval module, prompt templates, intent classifier | ⬜ Pending | — |
 | 4 | Supervisor Agent | Intent classification → routing, session context, CrewAI skeleton | ⬜ Pending | — |
 | 5 | Subject Agents (OS / DBMS / CN / DSA) | 4 agents w/ domain prompts, eval Q set, ≥80% accuracy | ⬜ Pending | — |
