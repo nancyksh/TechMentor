@@ -42,3 +42,8 @@
 ### Security note for the user
 - A GitHub PAT with `repo` scope and 7-day expiry is in `C:\Users\nancy\.git-credentials` on this machine.
 - After the project is done (or earlier if desired), revoke it at https://github.com/settings/tokens
+
+### Cleanup pass (same day)
+- Removed the binary `TechMentor_AI_ProjectSynopsis.docx` from the repo — its content is already in `docs/00_project_brief.md`, so the docx was just bloat.
+- Tightened `.gitignore` with explicit patterns for `*.docx`, `*.pdf`, `*.pptx`, `*.xlsx`, `data/hf_cache/`, `data/embeddings_cache/`, `data/raw/`, `models_cache/` so future binary reference files and ML caches stay out.
+- Pushed as commit `6fa7895`.
