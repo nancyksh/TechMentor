@@ -2,15 +2,15 @@
 
 > **Current phase is highlighted at the top. The table below is updated after every phase exit.**
 
-## ✅ Current Phase: **0 — Repo & Tooling Bootstrap (DONE)** + **1 — Architecture & Documentation + 2 — Data Layer (IN PROGRESS)** + 4 standout features defined
+## ✅ Current Phase: **0, 1, 2 DONE** → moving to **3 — NLP Foundation + 4 — Supervisor**
 
 | # | Phase | Deliverable | Status | Completed on |
 |---|---|---|---|---|
 | **0** | Repo & Tooling Bootstrap | Git init, push to GitHub, `.gitignore`, `requirements.txt`, README skeleton, Dockerfile skeleton, CI lint | ✅ Done | 2026-06-04 |
-| 1 | Architecture & Documentation | `docs/01_architecture.md`, `docs/02_phase_plan.md`, `AGENT.md` v1 | 🟢 In Progress | — |
-| 2 | Data Layer | SQLite schema (users, sessions, messages, quiz, interview, roadmap, **flashcards**, **code_runs**), DAO, seed script | 🟢 In Progress | — |
-| 3 | NLP Foundation | Sentence-BERT loader, embedding store, retrieval module, prompt templates, intent classifier | ⬜ Pending | — |
-| 4 | Supervisor Agent | Intent classification → routing, session context, CrewAI skeleton | ⬜ Pending | — |
+| **1** | Architecture & Documentation | `docs/01_architecture.md`, `docs/02_phase_plan.md`, `AGENT.md` v1 | ✅ Done | 2026-06-04 |
+| **2** | Data Layer | SQLite schema (11 tables: users, sessions, messages, quiz, interview, questions, roadmap, problems, code_runs, flashcards, reviews, settings), DAOs, seed script, **11/11 tests passing** | ✅ Done | 2026-06-04 |
+| 3 | NLP Foundation | Sentence-BERT loader, embedding store, retrieval module, prompt templates, intent classifier | 🟢 In Progress | — |
+| 4 | Supervisor Agent | Intent classification → routing, session context, CrewAI skeleton | 🟢 In Progress | — |
 | 5 | Subject Agents (OS / DBMS / CN / DSA) | 4 agents w/ domain prompts, eval Q set, ≥80% accuracy, **Socratic + ELI5 prompt modes** | ⬜ Pending | — |
 | **5b** | **Code Sandbox (DSA) — 🌟 STANDOUT** | `src/services/code_runner.py`, hidden test-case runner, Code Lab Streamlit page | ⬜ Pending | — |
 | 6 | Quiz Generation Agent | MCQ + short-answer generation, scoring, history-aware | ⬜ Pending | — |
