@@ -173,3 +173,31 @@ New files written:
 - Phase 10a: Full integration test (manual + automated), ruff fix remaining warnings
 - Phase 10b: HF Spaces deploy (add SDK header to README.md for Spaces, set secrets, push)
 - Tag v1.0.0 release
+
+## Day 1 — Deploy prep shipped (Phase 10a + 10b partial) ✅
+**Date:** 2026-06-07
+**Phases completed:** 10a (partial), 10b (partial — code ready, deploy needs user HF account)
+**Status:** 🟢 Code fully ready for HF Spaces. Waiting on user to create HF Space + add secret.
+
+### What I did
+- Created `start.sh` — startup script that applies schema, seeds DB, launches Streamlit
+- Updated `Dockerfile` — uses `start.sh`, proper permissions, healthcheck
+- Added HF Spaces SDK front matter to `README.md`
+- Fixed `QuizDAO` import in `app.py` (F821 lint error)
+- Final state: **62/62 tests passing, all lint checks passed**
+- Pushed as commit `462da38`
+
+### HF Spaces deploy instructions for the user
+1. Go to https://huggingface.co/new-space
+2. Space name: `TechMentor` (or any name you like)
+3. License: MIT
+4. SDK: **Docker** (important — not Streamlit)
+5. Click **Create Space**
+6. Go to **Settings** → **Variables and secrets** → **New secret**
+   - Name: `GEMINI_API_KEY`
+   - Value: your Gemini API key
+7. Go to **Settings** → **Repository** → **Connect to external repository**
+   - Repository: `nancyksh/TechMentor`
+   - Branch: `main`
+8. The Space will auto-build. First build takes 2-3 minutes.
+9. Your app will be live at: `https://nancyksh-techmentor.hf.space`
