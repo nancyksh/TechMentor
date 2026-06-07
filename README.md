@@ -1,3 +1,13 @@
+---
+title: TechMentor AI
+emoji: 🎓
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8501
+pinned: false
+---
+
 # TechMentor AI
 
 > Multi-agent intelligent learning and interview assistant for Computer Science students.

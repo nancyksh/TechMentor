@@ -15,7 +15,7 @@ load_dotenv(Path(_repo) / ".env")
 
 import streamlit as st
 from src.db.connection import init_schema, connect
-from src.db.dao import UserDAO, SessionDAO, MessageDAO, SettingsDAO, ProblemDAO, CodeRunDAO
+from src.db.dao import UserDAO, SessionDAO, MessageDAO, SettingsDAO, ProblemDAO, CodeRunDAO, QuizDAO
 from src.supervisor import Supervisor
 from src.services.code_runner import run_code
 from src.services.heatmap import build_heatmap
