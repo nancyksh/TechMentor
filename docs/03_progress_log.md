@@ -100,3 +100,76 @@
 - GitHub repo: https://github.com/nancyksh/TechMentor (4 commits on main, will be 5 after this log update)
 - Key: working, model auto-discovered, smoke test passing (`PONG`)
 - No blockers
+
+## Day 1 — Core system shipped (Phases 3–9) 🚀
+**Date:** 2026-06-07
+**Phases completed:** 3, 4, 5, 5b, 6, 6b, 7, 7b, 8, 8b, 9
+**Status:** 🟢 All core code written. **62/62 tests green**, lint clean. Moving to deploy.
+
+### What I built (Phases 3–9)
+
+**Phase 3 — NLP Foundation**
+- `src/nlp/llm.py` — Google Gemini wrapper (`google-genai` SDK, not the deprecated `google-generativeai`). Lazy client, retry with backoff, structured JSON extraction, token accounting.
+- `src/nlp/intent.py` — Rule-based intent classifier: ~40 regex patterns for 6 intents × 4 subjects × 2 teaching modes. Sub-millisecond, zero LLM calls.
+- `src/nlp/prompts.py` — Template loader with `Template.safe_substitute`. 11 prompt templates in `data/prompts/`.
+- `src/nlp/retrieval.py` — Sentence-BERT embedding store (dormant for v1, ready to enable via `ENABLE_RETRIEVAL=true`).
+- `data/prompts/*.md` — 11 versioned prompt templates: `system_default`, `system_socratic`, `system_eli5`, `subject_os/dbms/cn/dsa`, `quiz_gen`, `interview_gen`, `interview_eval`, `roadmap_gen`, `flashcard_gen`.
+- `scripts/smoke_gemini.py` — Auto-discovers the right model for the user's API key (saved us when `gemini-1.5-flash` was deprecated).
+
+**Phase 4 — Supervisor**
+- `src/supervisor/supervisor.py` — Central orchestrator. Classifies intent → dispatches to agent → persists messages → returns `AgentResponse`. Supports mode override (UI toggle). Creates/reuses sessions automatically.
+
+**Phase 5 — Subject Agents**
+- `src/agents/subjects/base.py` — Shared logic for all 4 subjects. Mode-aware prompt selection (default/socratic/eli5).
+- `src/agents/subjects/{os,dbms,cn,dsa}_agent.py` — Thin per-subject wrappers (one function each).
+- 3 teaching modes: Default (direct answer), Socratic (2-4 guiding questions), ELI5 (real-world analogy).
+
+**Phase 5b — Code Sandbox (🌟 standout)**
+- `src/services/code_runner.py` — Subprocess Python runner with 3s timeout, per-test-case execution, stdout matching. TLE detection. 5 seeded problems (Two Sum, Reverse String, FizzBuzz, Binary Search, Count Vowels).
+
+**Phase 6 — Quiz Agent**
+- `src/agents/quiz.py` — Gemini-powered MCQ generation with configurable subject/topic/difficulty/count. Persists to DB.
+
+**Phase 6b — Socratic + ELI5 Mode Toggles (🌟 standout)**
+- Sidebar radio buttons in Streamlit. Mode persisted to `settings` table. Subject agents swap system prompt based on mode.
+
+**Phase 7 — Interview Agent**
+- `src/agents/interview.py` — Question generation (technical/HR/DSA/mixed tracks) + answer evaluation (correctness/completeness/clarity, each 0.0–1.0). Per-question feedback.
+
+**Phase 7b — Flashcards + SM-2 (🌟 standout)**
+- `src/agents/flashcard.py` — Card generation from weak topics, SM-2 algorithm, daily due queue, recall rate tracking.
+- `src/services/sm2.py` — Pure-Python SM-2 (grade 0-5, ease/interval/reps state machine). 8 unit tests.
+
+**Phase 8 — Roadmap Agent**
+- `src/agents/roadmap.py` — Builds activity snapshot (quiz accuracy + flashcard recall + interview scores + doubt counts) → LLM generates 4-week plan → persisted to DB.
+
+**Phase 8b — Weakness Heatmap (🌟 standout)**
+- `src/services/heatmap.py` — Weighted aggregation across 4 data sources (quiz 40%, flashcard 30%, interview 15%, doubts 15%). Returns a subjects × topics grid (0–100%).
+
+**Phase 9 — Streamlit UI**
+- `src/app.py` — 7-page single-file Streamlit app: Doubt Solver (chat), Quiz, Mock Interview, Code Lab, Flashcards, Dashboard (Plotly heatmap), History.
+- Mode toggle in sidebar. Session persistence. Real-time responses.
+
+### Test suite
+- `tests/test_db.py` — 11 tests (schema, DAOs, FK cascades, JSON parsing)
+- `tests/test_nlp.py` — 30 tests (intent detection, subject detection, mode detection, prompt rendering, SM-2 algorithm)
+- `tests/test_supervisor.py` — 7 tests (classification, routing, persistence, mode override, session reuse) — all LLM calls mocked for deterministic results
+- `tests/test_code_runner.py` — 8 tests (pass/fail, runtime error, syntax error, TLE, FizzBuzz, edge cases)
+- **Total: 62/62 passing in 2.76s**
+
+### File inventory (this turn)
+New files written:
+- `src/nlp/llm.py`, `intent.py`, `prompts.py`, `retrieval.py`, `__init__.py`
+- `src/supervisor/supervisor.py`, `__init__.py`
+- `src/agents/__init__.py`, `quiz.py`, `interview.py`, `flashcard.py`, `roadmap.py`
+- `src/agents/subjects/__init__.py`, `base.py`, `os_agent.py`, `dbms_agent.py`, `cn_agent.py`, `dsa_agent.py`
+- `src/services/__init__.py`, `code_runner.py`, `heatmap.py`, `sm2.py`
+- `src/app.py`
+- `data/prompts/*.md` (11 templates)
+- `tests/test_nlp.py`, `test_supervisor.py`, `test_code_runner.py`, `conftest.py`
+- `requirements-extra.txt`
+
+### Next
+- Phase 10a: Full integration test (manual + automated), ruff fix remaining warnings
+- Phase 10b: HF Spaces deploy (add SDK header to README.md for Spaces, set secrets, push)
+- Tag v1.0.0 release

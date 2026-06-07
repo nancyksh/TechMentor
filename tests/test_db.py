@@ -41,7 +41,7 @@ def test_session_and_message_round_trip(conn, user_id):
 
 
 def test_quiz_attempt_round_trip_and_accuracy(conn, user_id):
-    qid = QuizDAO.create(conn, user_id, "DBMS", "normalization", "medium", 5, 4, 5, {"foo": "bar"})
+    QuizDAO.create(conn, user_id, "DBMS", "normalization", "medium", 5, 4, 5, {"foo": "bar"})
     attempts = QuizDAO.list_for_user(conn, user_id, subject="DBMS")
     assert len(attempts) == 1
     assert attempts[0]["score"] == 4
