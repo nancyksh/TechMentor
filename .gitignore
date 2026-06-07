@@ -89,3 +89,10 @@ data/embeddings_cache/
 data/raw/
 models_cache/
 
+# Stray credentials (never commit, even by accident)
+*git-credentials*
+*.netrc
+.ghp_*
+.github_token
+
+

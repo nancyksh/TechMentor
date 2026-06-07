@@ -24,7 +24,7 @@ Students can:
 | Language | Python | 3.11+ (tested on 3.13.5) |
 | Frontend | Streamlit | ≥1.36 |
 | Agent orchestration | CrewAI | ≥0.86 |
-| LLM | Google Gemini (`gemini-1.5-flash` / `gemini-1.5-pro`) via `google-generativeai` | ≥0.7 |
+| LLM | Google Gemini (`gemini-2.5-flash` / `gemini-2.5-pro` / `gemini-2.0-flash`) via `google-genai` | ≥1.0 |
 | Embeddings | Sentence-Transformers `all-MiniLM-L6-v2` | latest |
 | Vector store | NumPy cosine (in-memory) | bundled |
 | Database | SQLite (stdlib) | 3 |
@@ -183,7 +183,8 @@ Test layers:
 
 | Problem | Fix |
 |---|---|
-| `google-generativeai` 401 | Key missing/wrong. Re-check `.env` / HF Space secrets. |
+| `google-genai` 401 / 403 | Key missing/wrong/restricted. Re-check `.env` / HF Space secrets. |
+| `404 NOT_FOUND models/gemini-1.5-flash` | The 1.5 model line was retired. Use `gemini-2.5-flash` (or `gemini-2.0-flash`). Run `python scripts/smoke_gemini.py` to auto-discover allowed models. |
 | `sentence-transformers` download fails | Pre-download model, set `HF_HOME` to a writable dir, or pass `cache_folder=`. |
 | Streamlit `SessionState` warnings | Use `st.session_state` (Streamlit ≥1.28). |
 | HF Space build OOM | Switch to `cpu-basic` (16 GB) or reduce model size. |

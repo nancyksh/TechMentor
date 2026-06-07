@@ -7,12 +7,21 @@
 [![Deploy](https://img.shields.io/badge/Deploy-HF%20Spaces-yellow)](#)
 
 TechMentor AI is a web-based, multi-agent platform that helps CS students:
-- Resolve subject doubts (OS, DBMS, CN, DSA)
+- Resolve subject doubts (OS, DBMS, CN, DSA) with **🗣️ Socratic** or **💡 ELI5** teaching modes
 - Take auto-generated quizzes
 - Practice mock technical interviews with feedback
 - Get a personalized study roadmap
+- 🔬 **Run DSA code against hidden test cases** in a live sandbox
+- 🃏 **Review auto-generated flashcards** on a daily spaced-repetition queue
+- 🧠 **Visualize weaknesses** in a live color-coded heatmap
 
 Built with a Supervisor Agent routing queries to specialized agents powered by Google Gemini and Sentence-BERT embeddings. Deployed on Hugging Face Spaces.
+
+## 🌟 What makes it stand out
+1. **Live Code Sandbox for DSA** — paste Python, system runs it against hidden tests, reports pass/fail + runtime. *No other "AI tutor" actually executes student code.*
+2. **Socratic + ELI5 Modes** — toggle the teaching style per session. Socratic asks guiding questions; ELI5 uses real-world analogies.
+3. **Weakness Heatmap** — live, color-coded grid of subjects × topics, computed from your messages, quiz scores, interview feedback, and flashcard recall.
+4. **Spaced-Repetition Flashcards (SM-2)** — auto-generated from your weak topics, with a daily review queue that adapts to your recall.
 
 ---
 

@@ -47,3 +47,20 @@
 - Removed the binary `TechMentor_AI_ProjectSynopsis.docx` from the repo — its content is already in `docs/00_project_brief.md`, so the docx was just bloat.
 - Tightened `.gitignore` with explicit patterns for `*.docx`, `*.pdf`, `*.pptx`, `*.xlsx`, `data/hf_cache/`, `data/embeddings_cache/`, `data/raw/`, `models_cache/` so future binary reference files and ML caches stay out.
 - Pushed as commit `6fa7895`.
+
+### Key validation + standout features added (same day)
+- Received Gemini key from user (key stored in `.env` only; never committed. Format prefix: `AQ.Ab` — a valid Google GenAI key format.)
+- **Key works** — the format I didn't recognize (`AQ.Ab...`) is a valid Google GenAI key
+- Found that `gemini-1.5-flash` is deprecated → switched to `gemini-2.5-flash`
+- Found that `google-generativeai` SDK is deprecated → switched to `google-genai` (≥1.0)
+- Wrote `scripts/smoke_gemini.py` that auto-discovers the right model for the user's key (handy if they hit rate limits or want to switch)
+- Created `.env` (gitignored) with the real key
+- Smoke test: **PONG** response from `gemini-2.5-flash` ✅
+- **Added 4 standout features to differentiate v1.0** (per user's "make it stand out" request):
+  1. 🔬 Live Code Sandbox for DSA
+  2. 🗣️💡 Socratic + ELI5 Mode Toggles
+  3. 🧠 Weakness Heatmap Dashboard
+  4. 🃏 Spaced-Repetition Flashcards (SM-2)
+- Updated all docs: `README.md` (Standout Features section), `docs/01_architecture.md` (new components + data flows), `docs/02_phase_plan.md` (4 new sub-phases 5b/6b/7b/8b), `docs/04_decisions.md` (ADR-008 + ADR-009), `AGENT.md` (new SDK troubleshooting)
+- Updates landed in commit `e30e14e`
+- **Security incident (resolved):** First push was rejected by GitHub's push protection — secret scanner matched a literal key string I had written in the progress log (learning: never write a literal API key into any committed file, even in a log). Also matched a stray `Usersnancy.git-credentials` file created by a PowerShell path-handling bug. Both removed; `.gitignore` tightened with `*git-credentials*`, `*.netrc`, `.ghp_*`, `.github_token` patterns. Commit amended.

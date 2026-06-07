@@ -2,22 +2,32 @@
 
 > **Current phase is highlighted at the top. The table below is updated after every phase exit.**
 
-## ✅ Current Phase: **0 — Repo & Tooling Bootstrap (DONE)** → moving to **1 — Architecture & Documentation + 2 — Data Layer**
+## ✅ Current Phase: **0 — Repo & Tooling Bootstrap (DONE)** + **1 — Architecture & Documentation + 2 — Data Layer (IN PROGRESS)** + 4 standout features defined
 
 | # | Phase | Deliverable | Status | Completed on |
 |---|---|---|---|---|
 | **0** | Repo & Tooling Bootstrap | Git init, push to GitHub, `.gitignore`, `requirements.txt`, README skeleton, Dockerfile skeleton, CI lint | ✅ Done | 2026-06-04 |
 | 1 | Architecture & Documentation | `docs/01_architecture.md`, `docs/02_phase_plan.md`, `AGENT.md` v1 | 🟢 In Progress | — |
-| 2 | Data Layer | SQLite schema (users, sessions, messages, quiz, interview, roadmap), DAO, seed script | 🟢 In Progress | — |
+| 2 | Data Layer | SQLite schema (users, sessions, messages, quiz, interview, roadmap, **flashcards**, **code_runs**), DAO, seed script | 🟢 In Progress | — |
 | 3 | NLP Foundation | Sentence-BERT loader, embedding store, retrieval module, prompt templates, intent classifier | ⬜ Pending | — |
 | 4 | Supervisor Agent | Intent classification → routing, session context, CrewAI skeleton | ⬜ Pending | — |
-| 5 | Subject Agents (OS / DBMS / CN / DSA) | 4 agents w/ domain prompts, eval Q set, ≥80% accuracy | ⬜ Pending | — |
+| 5 | Subject Agents (OS / DBMS / CN / DSA) | 4 agents w/ domain prompts, eval Q set, ≥80% accuracy, **Socratic + ELI5 prompt modes** | ⬜ Pending | — |
+| **5b** | **Code Sandbox (DSA) — 🌟 STANDOUT** | `src/services/code_runner.py`, hidden test-case runner, Code Lab Streamlit page | ⬜ Pending | — |
 | 6 | Quiz Generation Agent | MCQ + short-answer generation, scoring, history-aware | ⬜ Pending | — |
+| **6b** | **Socratic + ELI5 Mode Toggles — 🌟 STANDOUT** | UI toggles + prompt swap, integrated with subject agents | ⬜ Pending | — |
 | 7 | Interview Preparation Agent | Mock interview flow, Q-gen, evaluation rubric, feedback | ⬜ Pending | — |
+| **7b** | **Flashcard Agent (SM-2) — 🌟 STANDOUT** | Auto-generate from weak topics, SM-2 algorithm, daily review queue UI | ⬜ Pending | — |
 | 8 | Study Roadmap Agent | Reads session history + scores, outputs prioritized plan | ⬜ Pending | — |
-| 9 | Streamlit UI | Single-page app: chat, subject picker, quiz panel, interview panel, roadmap panel, history | ⬜ Pending | — |
+| **8b** | **Weakness Heatmap — 🌟 STANDOUT** | `src/services/heatmap.py` + Plotly heatmap on Dashboard page | ⬜ Pending | — |
+| 9 | Streamlit UI | Single-page app: chat, subject picker, quiz panel, interview panel, roadmap panel, history, **Code Lab, Flashcards, Dashboard** | ⬜ Pending | — |
 | 10a | Testing & QA | Unit + integration tests, fix bugs, CI green | ⬜ Pending | — |
 | 10b | Docker & Deploy | Dockerfile, HF Spaces config, secrets, smoke test, live URL | ⬜ Pending | — |
+
+## 🌟 Standout Features (v1.0 differentiators)
+1. **🔬 Live Code Sandbox for DSA** — paste Python, run against hidden tests, get pass/fail + runtime.
+2. **🗣️💡 Socratic + ELI5 Mode Toggles** — UI toggle changes agent's teaching style.
+3. **🧠 Weakness Heatmap Dashboard** — color-coded live mastery grid across subjects × topics.
+4. **🃏 Spaced-Repetition Flashcards (SM-2)** — auto-generated from weak topics, daily review queue.
 
 ## Status Legend
 - ⬜ Pending

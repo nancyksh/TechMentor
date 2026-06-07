@@ -64,3 +64,28 @@
 **Consequences:**
 - Smaller dep tree
 - Speech module stub kept in `src/utils/` for future
+
+## ADR-008 — Add 4 standout features to make v1 demoable and memorable
+**Date:** 2026-06-04
+**Context:** User asked to make the product "interesting and uniquely stand out" beyond the synopsis baseline. 1-week deadline constrains scope.
+**Decision:** Add the following 4 features — each is high-impact and ship-able in 1 week:
+
+1. **Live Code Sandbox for DSA** (`src/services/code_runner.py`) — subprocess Python runner, 3-sec timeout, hidden test cases, returns `{passed, total, runtime_ms, error}`. Subprocess (not Docker-in-Docker) = zero extra infra.
+2. **Socratic + ELI5 Mode Toggles** — UI toggle in Doubt Solver; changes subject-agent system prompt. Pedagogically superior, near-zero new code (prompt swap).
+3. **Weakness Heatmap Dashboard** — `src/services/heatmap.py` aggregates mastery across messages/quiz/interview/flashcards. Plotly heatmap on a new Dashboard page. Visually striking.
+4. **Spaced-Repetition Flashcards (SM-2)** — `src/services/sm2.py` pure-Python algorithm, `src/agents/flashcard.py` agent, daily review queue UI. Auto-generates from weak topics.
+
+**Consequences:**
+- Adds ~3-4 sub-phases (5b, 6b, 7b, 8b)
+- Adds 2 new DB tables (`flashcards`, `flashcard_reviews`, `code_runs`)
+- Adds 3 new Streamlit pages (Code Lab, Flashcards, Dashboard)
+- Deferred to v1.1: Mock GATE timed exam, confidence calibration, code review agent, PDF export, voice, multilingual
+
+## ADR-009 — Use `google-genai` (not deprecated `google-generativeai`)
+**Date:** 2026-06-04
+**Context:** `google-generativeai` is officially deprecated and the `gemini-1.5-*` model line was retired. Smoke test confirmed `404 NOT_FOUND` for the old model name on the user's key.
+**Decision:** Use the new `google-genai` SDK (≥1.0) and `gemini-2.5-flash` as the default model. `scripts/smoke_gemini.py` auto-discovers the right model for the user's key.
+**Consequences:**
+- API: `client = genai.Client(api_key=key); client.models.generate_content(model="gemini-2.5-flash", contents=...)`
+- Old SDK removed from `requirements.txt`
+- AGENT.md troubleshooting updated
