@@ -140,7 +140,7 @@ HF Spaces with **Docker SDK** is the production target. Steps:
 2. Add a Git remote: `git remote add hf https://huggingface.co/spaces/nancyksh/TechMentor`.
 3. Set secrets: Space → **Settings → Variables and secrets** → add `GEMINI_API_KEY`.
 4. Push: `git push hf main`.
-5. The Space builds the Dockerfile and serves on `https://nancyksh-techmentor.hf.space`.
+5. The Space builds the Dockerfile and serves on `https://nanceeeee-techmentor.hf.space`.
 
 ---
 
