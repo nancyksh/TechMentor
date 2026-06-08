@@ -54,7 +54,7 @@ For architecture and design decisions, see [docs/](./docs/).
 
 ## Live Demo
 
-Deployed at: **https://nancyksh-techmentor.hf.space** *(updated in Phase 10)*
+Deployed at: **[https://nanceeeee-techmentor.hf.space](https://nanceeeee-techmentor.hf.space)**
 
 ---
 

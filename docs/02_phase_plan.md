@@ -2,7 +2,7 @@
 
 > **Current phase is highlighted at the top. The table below is updated after every phase exit.**
 
-## ✅ Current Phase: **0–9 DONE** → moving to **10a — Testing & QA + 10b — Deploy**
+## ✅ Current Phase: **ALL PHASES COMPLETE — v1.0 SHIPPED** 🎉
 
 | # | Phase | Deliverable | Status | Completed on |
 |---|---|---|---|---|
@@ -20,8 +20,8 @@
 | **8** | Study Roadmap Agent | Activity snapshot from DB → LLM 4-week plan, persisted to roadmap_items | ✅ Done | 2026-06-07 |
 | **8b** | **Weakness Heatmap — 🌟 STANDOUT** | `src/services/heatmap.py` (weighted aggregation from quiz/flashcard/interview/doubts), Plotly heatmap | ✅ Done | 2026-06-07 |
 | **9** | Streamlit UI | 7 pages: Doubt Solver, Quiz, Mock Interview, Code Lab, Flashcards, Dashboard, History | ✅ Done | 2026-06-07 |
-| 10a | Testing & QA | **62/62 tests passing**, lint clean, full integration | 🟢 In Progress | — |
-| 10b | Docker & Deploy | HF Spaces config, secrets, smoke test, live URL | ⬜ Pending | — |
+| **10a** | Testing & QA | **62/62 tests passing**, lint clean, full integration | ✅ Done | 2026-06-07 |
+| **10b** | Docker & Deploy | Dockerfile, HF Spaces config, secrets, **LIVE at nanceeeee-techmentor.hf.space** | ✅ Done | 2026-06-07 |
 
 ## 🌟 Standout Features (v1.0 differentiators)
 1. **🔬 Live Code Sandbox for DSA** — paste Python, run against hidden tests, get pass/fail + runtime.

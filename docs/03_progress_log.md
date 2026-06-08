@@ -169,35 +169,23 @@ New files written:
 - `tests/test_nlp.py`, `test_supervisor.py`, `test_code_runner.py`, `conftest.py`
 - `requirements-extra.txt`
 
-### Next
-- Phase 10a: Full integration test (manual + automated), ruff fix remaining warnings
-- Phase 10b: HF Spaces deploy (add SDK header to README.md for Spaces, set secrets, push)
-- Tag v1.0.0 release
-
-## Day 1 — Deploy prep shipped (Phase 10a + 10b partial) ✅
-**Date:** 2026-06-07
-**Phases completed:** 10a (partial), 10b (partial — code ready, deploy needs user HF account)
-**Status:** 🟢 Code fully ready for HF Spaces. Waiting on user to create HF Space + add secret.
-
-### What I did
-- Created `start.sh` — startup script that applies schema, seeds DB, launches Streamlit
+### HF Spaces deploy — LIVE ✅
+- Created `start.sh` — startup script (init schema + seed DB + launch Streamlit)
 - Updated `Dockerfile` — uses `start.sh`, proper permissions, healthcheck
 - Added HF Spaces SDK front matter to `README.md`
 - Fixed `QuizDAO` import in `app.py` (F821 lint error)
-- Final state: **62/62 tests passing, all lint checks passed**
-- Pushed as commit `462da38`
+- User created Space at https://huggingface.co/spaces/Nanceeeee/TechMentor
+- User set `GEMINI_API_KEY` secret in Space settings
+- Pushed code to HF Space via git push (force push to overwrite default README)
+- Build completed in ~4 minutes (Docker image + Sentence-BERT model download)
+- **App is LIVE at https://nanceeeee-techmentor.hf.space** ✅
+- HF token stripped from git credentials for security
+- Commit `e89639a` on GitHub, same SHA deployed to HF Spaces
 
-### HF Spaces deploy instructions for the user
-1. Go to https://huggingface.co/new-space
-2. Space name: `TechMentor` (or any name you like)
-3. License: MIT
-4. SDK: **Docker** (important — not Streamlit)
-5. Click **Create Space**
-6. Go to **Settings** → **Variables and secrets** → **New secret**
-   - Name: `GEMINI_API_KEY`
-   - Value: your Gemini API key
-7. Go to **Settings** → **Repository** → **Connect to external repository**
-   - Repository: `nancyksh/TechMentor`
-   - Branch: `main`
-8. The Space will auto-build. First build takes 2-3 minutes.
-9. Your app will be live at: `https://nancyksh-techmentor.hf.space`
+### v1.0 Deployed — ALL PHASES COMPLETE 🎉
+- 7 commits on main
+- 62/62 tests passing
+- All lint clean
+- 4 standout features working (Code Sandbox, Socratic/ELI5, Heatmap, Flashcards)
+- 7-page Streamlit UI
+- Live on HF Spaces
