@@ -29,6 +29,7 @@ def generate_quiz(
         prompt,
         system="You are TechMentor, a precise CS quiz generator. Output only valid JSON.",
         temperature=0.7,
+        max_output_tokens=4096,
     )
 
     # Persist

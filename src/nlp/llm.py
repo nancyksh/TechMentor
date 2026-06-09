@@ -66,11 +66,63 @@ class LLMResult:
         }
 
 
+def _try_repair_truncated(text: str) -> dict | list | None:
+    """Attempt to repair JSON truncated by token limit.
+
+    Counts unclosed braces/brackets and tries closing them in order.
+    Also strips trailing commas and incomplete string values.
+    """
+    stripped = re.sub(r"```(?:json)?\s*", "", text)
+    stripped = stripped.strip().rstrip("`")
+
+    stack = []
+    in_str = False
+    esc = False
+    for c in stripped:
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+        else:
+            if c == '"':
+                in_str = True
+            elif c in "{[":
+                stack.append(c)
+            elif c in "}]":
+                if stack and (
+                    (c == "}" and stack[-1] == "{")
+                    or (c == "]" and stack[-1] == "[")
+                ):
+                    stack.pop()
+
+    if not stack:
+        return None
+
+    repaired = stripped.rstrip(", ") + " "
+    while stack:
+        opener = stack.pop()
+        repaired += "}" if opener == "{" else "]"
+
+    repaired = re.sub(r",\s*([}\]])", r"\1", repaired)
+
+    if in_str:
+        repaired += '"'
+
+    try:
+        return json.loads(repaired)
+    except json.JSONDecodeError:
+        return None
+
+
 def _extract_json(text: str) -> dict | list:
     """Best-effort JSON extraction from a model response.
 
     Strategy: try strict json.loads first, then strip ```json ... ``` fences,
     then find the first balanced { ... } or [ ... ] block.
+    As a last resort, attempt to repair truncated JSON by closing open structures.
     """
     text = text.strip()
     try:
@@ -114,6 +166,11 @@ def _extract_json(text: str) -> dict | list:
                         except json.JSONDecodeError:
                             break
             j += 1
+
+    repaired = _try_repair_truncated(text)
+    if repaired is not None:
+        return repaired
+
     raise LLMError(f"Could not parse JSON from model output: {text[:200]!r}")
 
 
