@@ -28,6 +28,7 @@ ENV STREAMLIT_SERVER_PORT=8501 \
 EXPOSE 8501
 
 RUN useradd --create-home --shell /bin/bash appuser && chown -R appuser:appuser /app
+RUN chown -R appuser:appuser /app/data
 USER appuser
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \

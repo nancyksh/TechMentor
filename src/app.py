@@ -32,7 +32,14 @@ st.set_page_config(page_title="TechMentor AI", page_icon="🎓", layout="wide")
 # DB init (idempotent)
 # ------------------------------------------------------------------
 init_schema()
-_conn = connect()
+
+
+@st.cache_resource
+def _get_conn():
+    return connect()
+
+
+_conn = _get_conn()
 
 # ------------------------------------------------------------------
 # Session state
