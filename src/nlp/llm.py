@@ -78,7 +78,7 @@ def _extract_json(text: str) -> dict | list:
     except json.JSONDecodeError:
         pass
 
-    fenced = re.search(r"```(?:json)?\s*(\{.*?\}|\[.*?\])\s*```", text, re.DOTALL)
+    fenced = re.search(r"```(?:json)?\s*(\{.*\}|\[.*\])\s*```", text, re.DOTALL)
     if fenced:
         try:
             return json.loads(fenced.group(1))
