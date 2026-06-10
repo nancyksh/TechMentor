@@ -198,10 +198,13 @@ def page_interview():
             st.session_state.interview_state = {
                 "track": track,
                 "seq": 1,
+                "phase": "answer",
                 "current_question": q.get("question", ""),
                 "expected_points": q.get("expected_points", []),
                 "difficulty": q.get("difficulty", "medium"),
                 "history": [],
+                "last_eval": None,
+                "last_answer": None,
             }
             st.rerun()
     else:
@@ -209,10 +212,11 @@ def page_interview():
         st.markdown(f"### Question {ist['seq']}")
         st.markdown(f"_{ist['current_question']}_")
 
-        last_eval = ist.get("last_eval")
-        last_answer = ist.get("last_answer")
+        phase = ist.get("phase", "answer")
 
-        if last_eval:
+        if phase == "feedback":
+            last_eval = ist.get("last_eval") or {}
+            last_answer = ist.get("last_answer", "")
             st.markdown(f"**Your answer:** {last_answer}")
             score = last_eval.get("score_correctness", 0)
             st.markdown(f"**Score:** {score:.1f}/1.0")
@@ -234,14 +238,16 @@ def page_interview():
                             prev_answer=last_answer,
                             prev_feedback=last_eval.get("feedback", ""),
                         )
-                    st.session_state.interview_state.update({
+                    st.session_state.interview_state = {
+                        **st.session_state.interview_state,
                         "seq": ist["seq"] + 1,
+                        "phase": "answer",
                         "current_question": next_q.get("question", ""),
                         "expected_points": next_q.get("expected_points", []),
                         "difficulty": next_q.get("difficulty", "medium"),
                         "last_eval": None,
                         "last_answer": None,
-                    })
+                    }
                     st.rerun()
         else:
             answer = st.text_area("Your answer", height=150, key=f"ans_{ist['seq']}")
@@ -251,18 +257,35 @@ def page_interview():
                     if not answer.strip():
                         st.warning("Please type an answer.")
                     else:
-                        with st.spinner("Evaluating..."):
-                            eval_result = evaluate_answer(
-                                ist["track"], ist["current_question"],
-                                ist["expected_points"], answer,
-                            )
-                        st.session_state.interview_state["history"].append({
+                        eval_result = {}
+                        try:
+                            with st.spinner("Evaluating..."):
+                                eval_result = evaluate_answer(
+                                    ist["track"], ist["current_question"],
+                                    ist["expected_points"], answer,
+                                )
+                        except Exception as e:
+                            st.error(f"Evaluation failed: {e}")
+                            eval_result = {
+                                "score_correctness": 0.5,
+                                "score_completeness": 0.5,
+                                "score_clarity": 0.5,
+                                "feedback": f"Evaluation service error: {e}. Your answer was recorded.",
+                                "missing_points": [],
+                            }
+
+                        new_history = ist.get("history", []) + [{
                             "question": ist["current_question"],
                             "answer": answer,
                             "eval": eval_result,
-                        })
-                        st.session_state.interview_state["last_eval"] = eval_result
-                        st.session_state.interview_state["last_answer"] = answer
+                        }]
+                        st.session_state.interview_state = {
+                            **st.session_state.interview_state,
+                            "phase": "feedback",
+                            "history": new_history,
+                            "last_eval": eval_result,
+                            "last_answer": answer,
+                        }
                         st.rerun()
             with col2:
                 if st.button("End Interview"):

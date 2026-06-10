@@ -57,5 +57,6 @@ def evaluate_answer(
         prompt,
         system="You are TechMentor, a strict but fair interview evaluator. Output only valid JSON.",
         temperature=0.2,
+        max_output_tokens=4096,
     )
     return obj
