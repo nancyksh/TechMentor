@@ -279,21 +279,26 @@ def page_interview():
                 st.rerun()
         else:
             if st.button("Next Question", type="primary"):
-                with st.spinner("Generating next question..."):
-                    next_q = generate_question(
-                        track=st.session_state[_TRACK],
-                        seq=st.session_state[_SEQ] + 1,
-                        prev_answer=last_answer,
-                        prev_feedback=eval_result.get("feedback", ""),
-                    )
-                st.session_state[_SEQ] = st.session_state[_SEQ] + 1
-                st.session_state[_QUESTION] = next_q.get("question", "")
-                st.session_state[_POINTS] = next_q.get("expected_points", [])
-                st.session_state[_DIFF] = next_q.get("difficulty", "medium")
-                st.session_state[_EVAL] = None
-                st.session_state[_ANSWER] = None
-                st.session_state[_PHASE] = "answer"
-                st.rerun()
+                next_q = None
+                try:
+                    with st.spinner("Generating next question..."):
+                        next_q = generate_question(
+                            track=st.session_state[_TRACK],
+                            seq=st.session_state[_SEQ] + 1,
+                            prev_answer=last_answer,
+                            prev_feedback=eval_result.get("feedback", ""),
+                        )
+                except Exception as e:
+                    st.error(f"Failed to generate next question: {e}")
+                if next_q:
+                    st.session_state[_SEQ] = st.session_state[_SEQ] + 1
+                    st.session_state[_QUESTION] = next_q.get("question", "Could not generate question. Try again.")
+                    st.session_state[_POINTS] = next_q.get("expected_points", [])
+                    st.session_state[_DIFF] = next_q.get("difficulty", "medium")
+                    st.session_state[_EVAL] = None
+                    st.session_state[_ANSWER] = None
+                    st.session_state[_PHASE] = "answer"
+                    st.rerun()
 
     elif phase == "done":
         history = st.session_state.get(_HISTORY, [])

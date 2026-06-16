@@ -34,6 +34,7 @@ def generate_question(
         prompt,
         system="You are TechMentor, a structured interview coach. Output only valid JSON.",
         temperature=0.6,
+        max_output_tokens=4096,
     )
     return obj
 
