@@ -204,11 +204,21 @@ def page_interview():
     if phase == "setup":
         track = st.selectbox("Interview track", ["technical", "hr", "dsa", "mixed"], index=0)
         if st.button("Start Interview", type="primary"):
-            with st.spinner("Preparing first question..."):
-                q = generate_question(track=track)
+            q = None
+            try:
+                with st.spinner("Preparing first question..."):
+                    q = generate_question(track=track)
+            except Exception:
+                pass
+            if not q or not q.get("question"):
+                q = {
+                    "question": "Tell me about yourself and your background in computer science.",
+                    "expected_points": ["education", "projects", "skills"],
+                    "difficulty": "easy",
+                }
             st.session_state[_TRACK] = track
             st.session_state[_SEQ] = 1
-            st.session_state[_QUESTION] = q.get("question", "")
+            st.session_state[_QUESTION] = q["question"]
             st.session_state[_POINTS] = q.get("expected_points", [])
             st.session_state[_DIFF] = q.get("difficulty", "medium")
             st.session_state[_HISTORY] = []
@@ -227,7 +237,13 @@ def page_interview():
                 if not answer.strip():
                     st.warning("Please type an answer.")
                 else:
-                    eval_result = {}
+                    eval_result = {
+                        "score_correctness": 0.5,
+                        "score_completeness": 0.5,
+                        "score_clarity": 0.5,
+                        "feedback": "Answer recorded. Evaluation was unavailable.",
+                        "missing_points": [],
+                    }
                     try:
                         with st.spinner("Evaluating..."):
                             eval_result = evaluate_answer(
@@ -236,14 +252,8 @@ def page_interview():
                                 st.session_state[_POINTS],
                                 answer,
                             )
-                    except Exception as e:
-                        eval_result = {
-                            "score_correctness": 0.5,
-                            "score_completeness": 0.5,
-                            "score_clarity": 0.5,
-                            "feedback": f"Evaluation error: {e}",
-                            "missing_points": [],
-                        }
+                    except Exception:
+                        pass
                     st.session_state[_HISTORY] = st.session_state.get(_HISTORY, []) + [{
                         "question": st.session_state[_QUESTION],
                         "answer": answer,
@@ -288,17 +298,29 @@ def page_interview():
                             prev_answer=last_answer,
                             prev_feedback=eval_result.get("feedback", ""),
                         )
-                except Exception as e:
-                    st.error(f"Failed to generate next question: {e}")
-                if next_q:
-                    st.session_state[_SEQ] = st.session_state[_SEQ] + 1
-                    st.session_state[_QUESTION] = next_q.get("question", "Could not generate question. Try again.")
-                    st.session_state[_POINTS] = next_q.get("expected_points", [])
-                    st.session_state[_DIFF] = next_q.get("difficulty", "medium")
-                    st.session_state[_EVAL] = None
-                    st.session_state[_ANSWER] = None
-                    st.session_state[_PHASE] = "answer"
-                    st.rerun()
+                except Exception:
+                    pass
+                if not next_q or not next_q.get("question"):
+                    fallback_qs = {
+                        2: "Can you explain a project you worked on and the technical decisions you made?",
+                        3: "How would you design a system that handles millions of concurrent users?",
+                        4: "Describe a time you had to debug a difficult problem. What was your approach?",
+                        5: "What are the trade-offs between different data structures for this use case?",
+                    }
+                    next_seq = st.session_state[_SEQ] + 1
+                    next_q = {
+                        "question": fallback_qs.get(next_seq, "Tell me about a challenging problem you solved."),
+                        "expected_points": [],
+                        "difficulty": "medium",
+                    }
+                st.session_state[_SEQ] = st.session_state[_SEQ] + 1
+                st.session_state[_QUESTION] = next_q["question"]
+                st.session_state[_POINTS] = next_q.get("expected_points", [])
+                st.session_state[_DIFF] = next_q.get("difficulty", "medium")
+                st.session_state[_EVAL] = None
+                st.session_state[_ANSWER] = None
+                st.session_state[_PHASE] = "answer"
+                st.rerun()
 
     elif phase == "done":
         history = st.session_state.get(_HISTORY, [])
