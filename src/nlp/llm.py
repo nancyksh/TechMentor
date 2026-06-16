@@ -182,6 +182,8 @@ def _call_with_retry(call_fn, *, max_retries: int = 3):
         except Exception as e:  # broad: SDK raises various types
             last_err = e
             msg = str(e).lower()
+            if "quota" in msg or "resource_exhausted" in msg:
+                raise LLMError(f"LLM quota exhausted: {e}")
             transient = any(
                 k in msg
                 for k in ("429", "500", "502", "503", "504", "timeout", "unavailable", "rate")
